@@ -2,36 +2,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid rgba(0,0,0,.125);
+            font-weight: 500;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            width: 200px;
+            background-color: #f8f9fa;
+            font-weight: 500;
+            color: #495057;
+        }
+        .badge-role {
+            background-color: #198754;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
-<h1>Профиль пользователя</h1>
+<nav class="navbar navbar-light bg-white border-bottom">
+    <div class="container">
+        <span class="navbar-brand" th:text="${user.email}">user@mail.ru</span>
+        <span class="text-muted">
+                с ролями:
+                <span th:each="role : ${user.roles}"
+                      class="badge badge-role me-1"
+                      th:text="${role.name}">USER</span>
+            </span>
+        <div class="ms-auto d-flex align-items-center gap-2">
+            <div sec:authorize="hasRole('ADMIN')">
+                <a href="/admin/users" class="btn btn-outline-primary btn-sm">В панель админа</a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Выйти</button>
+            </form>
+        </div>
+    </div>
+</nav>
 
-<p>Добро пожаловать, <strong sec:authentication="name">User</strong>!</p>
-<p>Ваша роль: <span sec:authentication="authorities">Пользователь</span></p>
+<!-- Основной контент -->
+<div class="container mt-4">
+    <h5 class="mb-3">Пользователь</h5>
 
-<hr>
-
-<div th:if="${user}">
-    <p><strong>ID:</strong> <span th:text="${user.id}">1</span></p>
-    <p><strong>First Name:</strong> <span th:text="${user.firstName}">Ivan</span></p>
-    <p><strong>Last Name:</strong> <span th:text="${user.lastName}">Ivanov</span></p>
-    <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
-    <p><strong>Username:</strong> <span th:text="${user.username}">ivanivanov</span></p>
-    <p><strong>Roles:</strong>
-        <span th:each="role : ${user.roles}" th:text="${role.name} + ' '">Пользователь</span>
-    </p>
+    <div class="card">
+        <div class="card-header">
+            Информация о пользователе
+        </div>
+        <div class="card-body p-0" th:if="${user}">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${user.id}">1</td>
+                </tr>
+                <tr>
+                    <th>Имя</th>
+                    <td th:text="${user.firstName}">Ivan</td>
+                </tr>
+                <tr>
+                    <th>Фамилия</th>
+                    <td th:text="${user.lastName}">Ivanov</td>
+                </tr>
+                <tr>
+                    <th>Почта</th>
+                    <td th:text="${user.email}">ivan@mail.ru</td>
+                </tr>
+                <tr>
+                    <th>Логин</th>
+                    <td th:text="${user.username}">ivanivanov</td>
+                </tr>
+                <tr>
+                    <th>Роль</th>
+                    <td>
+                        <span th:each="role : ${user.roles}" class="badge badge-role" th:text="${role.name}">Пользователь</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<hr>
-
-<div sec:authorize="hasRole('ADMIN')">
-    <a href="/admin/users">В панель админа</a>
-    <br><br>
-</div>
-
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Выйти</button>
-</form>
 
 </body>
 </html>
