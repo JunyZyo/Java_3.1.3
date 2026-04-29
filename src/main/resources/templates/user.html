@@ -30,9 +30,21 @@
             background-color: #171921;
             color: white;
         }
+        .navbar-text {
+            color: #ffffff;
+        }
         .btn {
-            border-width: 0;
-            color: white;
+            font-size: 14px;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            background: transparent;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #dc3545;
+            color: #fff;
         }
     </style>
 </head>
@@ -40,14 +52,14 @@
 <nav class="navbar navbar-dark border-bottom">
     <div class="container">
         <span class="navbar-brand" th:text="${user.email}">user@mail.ru</span>
-        <span class="text-muted">
+        <span class="navbar-text">
             Роль:
             <span th:each="role : ${user.roles}" class="badge badge-role me-1" th:text="${role.name}">USER</span>
             </span>
         <div class="ms-auto d-flex align-items-center gap-2">
-            <div sec:authorize="hasRole('ADMIN')">
-                <a href="/admin/users" class="btn btn-outline-secondary btn-sm">В панель админа</a>
-            </div>
+<!--            <div sec:authorize="hasRole('ADMIN')">-->
+<!--                <a href="/admin/users" class="btn btn-outline-secondary btn-sm">В панель админа</a>-->
+<!--            </div>-->
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="btn btn-outline-secondary btn-sm">Выйти</button>
             </form>

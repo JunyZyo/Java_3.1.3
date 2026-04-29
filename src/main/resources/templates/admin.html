@@ -12,18 +12,21 @@
         }
 
         .navbar {
-            background-color: #fff !important;
+            background-color: #171921;
             border-bottom: 1px solid #dee2e6;
             padding: 8px 0;
         }
         .navbar-brand {
             font-size: 16px;
-            color: #212529;
+            color: #ffffff;
             font-weight: 400;
+        }
+        .navbar-brand:hover {
+            color: #ffffff;
         }
         .navbar-text {
             font-size: 14px;
-            color: #6c757d;
+            color: #ffffff;
         }
         .badge-role {
             background-color: #198754;
@@ -80,9 +83,6 @@
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: all 0.2s;
-        }
-        .tabs label:hover {
-            color: #212529;
         }
         .tabs input[type="radio"]:checked + label {
             color: #212529;
@@ -206,45 +206,45 @@
     <div class="container">
         <span class="navbar-brand" th:text="${currentUser.email}">admin@mail.ru</span>
         <span class="navbar-text">
-                with roles:
+                Роли
                 <span th:each="role : ${currentUser.roles}"
                       th:class="${role.name == 'ROLE_ADMIN'} ? 'badge-role-admin ms-1' : 'badge-role ms-1'"
-                      th:text="${role.name}">ADMIN</span>
+                      th:text="${role.name}">Админ</span>
             </span>
         <form th:action="@{/logout}" method="post" class="ms-auto">
-            <button type="submit" class="btn-logout">Logout</button>
+            <button type="submit" class="btn-logout">Выйти</button>
         </form>
     </div>
 </nav>
 
 <div class="container mt-4">
-    <h1 class="page-title">Admin</h1>
-    <p class="page-subtitle">Admin panel</p>
+    <h1 class="page-title">Админ</h1>
+    <p class="page-subtitle">Панель админа</p>
 
     <div th:if="${success}" class="alert alert-success py-2" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-danger py-2" th:text="${error}"></div>
 
     <div class="tabs">
         <input type="radio" name="tabs" id="tab1" checked="checked">
-        <label for="tab1">Users table</label>
+        <label for="tab1">Таблица пользователей</label>
 
         <input type="radio" name="tabs" id="tab2">
-        <label for="tab2">New User</label>
+        <label for="tab2">Новый пользователь</label>
 
         <div class="tab-content" id="content1">
             <div class="card">
-                <div class="card-header">Users table</div>
+                <div class="card-header">Таблица пользователей</div>
                 <div class="card-body p-0">
                     <table class="table">
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th>Имя</th>
+                            <th>Фамилия</th>
+                            <th>Почта</th>
+                            <th>Роль</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -256,34 +256,20 @@
                             <td>
                                         <span th:each="role : ${user.roles}"
                                               th:class="${role.name == 'ROLE_ADMIN'} ? 'badge-role-admin me-1' : 'badge-role me-1'"
-                                              th:text="${role.name}">ADMIN</span>
+                                              th:text="${role.name}">Админ</span>
                             </td>
                             <td>
-
-
-
-<!--                                <a th:href="@{/admin/users/{id}/edit(id=${user.id})}"-->
-<!--                                   class="btn-edit">Edit</a>-->
-
-<!--                                <label th:for="'modal-' + ${user.id}"-->
-<!--                                       class="btn-edit"-->
-<!--                                       style="cursor: pointer;">-->
-<!--                                    Edit-->
-<!--                                </label>-->
-                                <!-- Кнопка-триггер модального окна -->
 
                                 <button type="button" class="btn-edit"
                                         data-bs-toggle="modal"
                                         th:attr="data-bs-target='#editModal' + ${user.id}">
-                                    Edit
+                                    Изменить
                                 </button>
-
-
 
                             </td>
                             <td>
                                 <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display: inline;">
-                                    <button type="submit" class="btn-delete">Delete</button>
+                                    <button type="submit" class="btn-delete">Удалить</button>
                                 </form>
                             </td>
                         </tr>
@@ -293,34 +279,31 @@
             </div>
         </div>
 
-        <!-- Содержимое таба 2 -->
+        <!-- Новый пользователь -->
         <div class="tab-content" id="content2">
             <div class="card">
-                <div class="card-header">New User</div>
+                <div class="card-header">Новый пользователь</div>
                 <div class="card-body">
                     <form th:action="@{/admin/users}" method="post" th:object="${newUser}">
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">First Name</label>
+                                <label class="form-label">Имя</label>
                                 <input type="text" class="form-control" th:field="*{firstName}" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Last Name</label>
+                                <label class="form-label">Фамилия</label>
                                 <input type="text" class="form-control" th:field="*{lastName}" required>
                             </div>
-                        </div>
-                        <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Email</label>
+                                <label class="form-label">Почта</label>
                                 <input type="email" class="form-control" th:field="*{email}" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Password</label>
+                                <label class="form-label">Пароль</label>
                                 <input type="password" class="form-control" th:field="*{password}" required>
                             </div>
-                        </div>
                         <div class="mb-3">
-                            <label class="form-label">Role</label>
+                            <label class="form-label">Роль</label>
                             <div class="d-flex gap-3">
                                 <div th:each="role : ${allRoles}" class="form-check">
                                     <input type="checkbox" class="form-check-input"
@@ -329,7 +312,8 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success btn-add">Add</button>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-add">Добавить</button>
                     </form>
                 </div>
             </div>
@@ -343,7 +327,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit user</h5>
+                    <h5 class="modal-title">Изменить пользователя</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -353,23 +337,23 @@
                             <input type="text" class="form-control" th:value="${user.id}" disabled>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">First name</label>
+                            <label class="form-label">Имя</label>
                             <input type="text" class="form-control" name="firstName" th:value="${user.firstName}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Last name</label>
+                            <label class="form-label">Фамилия</label>
                             <input type="text" class="form-control" name="lastName" th:value="${user.lastName}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label">Почта</label>
                             <input type="email" class="form-control" name="email" th:value="${user.email}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Оставьте пустым">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" class="form-control" name="password" placeholder="Можно оставить пустым">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Role</label>
+                            <label class="form-label">Роль</label>
                             <div class="d-flex gap-3">
                                 <div th:each="role : ${allRoles}" class="form-check">
                                     <input type="checkbox" class="form-check-input" name="roleIds"
@@ -379,8 +363,8 @@
                             </div>
                         </div>
                         <div class="d-flex gap-2 justify-content-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Изменить</button>
                         </div>
                     </form>
                 </div>
