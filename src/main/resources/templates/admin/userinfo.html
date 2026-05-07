@@ -20,6 +20,9 @@
             color: #ffffff;
             font-weight: 400;
         }
+        .navbar-brand:hover {
+            color: #ffffff;
+        }
         .navbar-text {
             font-size: 14px;
             color: #ffffff;
@@ -38,12 +41,15 @@
         }
         .btn-logout {
             font-size: 14px;
-            color: #dc3545;
-            border: 1px solid #dc3545;
-            background: transparent;
+            color: #6c757d;
+            background-color: transparent;
+            border: none;
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
+        }
+        .btn-logout:hover {
+            color: #ffffff;
         }
         .page-title {
             font-size: 28px;
@@ -139,7 +145,6 @@
 </nav>
 
 <div class="container mt-4">
-    <h1 class="page-title mb-4">Admin panel</h1>
 
     <div class="row">
         <!-- Левая боковая панель -->
@@ -160,64 +165,42 @@
 
         <!-- Правая часть с информацией о пользователе -->
         <div class="col-md-9">
+            <h1>User information-page</h1>
             <div class="card">
-                <div class="card-header">User information-page</div>
+                <div class="card-header">About user</div>
                 <div class="card-body">
-                    <!-- Вкладки -->
-                    <ul class="nav nav-pills mb-4">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">About user</a>
-                        </li>
-                    </ul>
-
                     <!-- Таблица с информацией -->
                     <table class="table info-table">
-                        <tbody>
+                        <thead>
                         <tr>
                             <th>ID</th>
-                            <td th:text="${viewedUser.id}">2</td>
-                        </tr>
-                        <tr>
+
                             <th>First Name</th>
-                            <td th:text="${viewedUser.firstName}">admin</td>
-                        </tr>
-                        <tr>
+
                             <th>Last Name</th>
-                            <td th:text="${viewedUser.lastName}">admin</td>
-                        </tr>
-                        <tr>
+
                             <th>Age</th>
-                            <td th:text="${viewedUser.age}">35</td>
-                        </tr>
-                        <tr>
+
                             <th>Email</th>
-                            <td th:text="${viewedUser.email}">admin@mail.ru</td>
-                        </tr>
-                        <tr>
+
                             <th>Role</th>
-                            <td>
-                                    <span th:each="role : ${viewedUser.roles}"
-                                          th:class="${role.name == 'ADMIN'} ? 'badge-role-admin me-1' : 'badge-role me-1'"
-                                          th:text="${role.name}">ADMIN</span>
-                            </td>
+
                         </tr>
+                        </thead>
+                        <tbody>
+                            <td th:text="${viewedUser.id}">2</td>
+                            <td th:text="${viewedUser.firstName}">admin</td>
+                            <td th:text="${viewedUser.lastName}">admin</td>
+                            <td th:text="${viewedUser.age}">35</td>
+                            <td th:text="${viewedUser.email}">admin@mail.ru</td>
+                            <td>
+                                <span th:each="role : ${viewedUser.roles}"
+                                      th:class="${role.name == 'ADMIN'} ? 'badge-role-admin me-1' : 'badge-role me-1'"
+                                      th:text="${role.name}">ADMIN</span>
+                            </td>
                         </tbody>
                     </table>
-
-                    <!-- Кнопки действий -->
-                    <div class="d-flex gap-2 mt-3">
-                        <button type="button" class="btn btn-primary btn-sm"
-                                data-bs-toggle="modal"
-                                th:attr="data-bs-target='#editModal' + ${viewedUser.id}">
-                            Edit
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm"
-                                data-bs-toggle="modal"
-                                th:attr="data-bs-target='#deleteModal' + ${viewedUser.id}">
-                            Delete
-                        </button>
                         <a href="/admin/users" class="btn btn-secondary btn-sm">Back to table</a>
-                    </div>
                 </div>
             </div>
         </div>
