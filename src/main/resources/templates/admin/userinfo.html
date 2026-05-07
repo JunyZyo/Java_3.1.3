@@ -25,14 +25,12 @@
             color: #ffffff;
         }
         .badge-role {
-            background-color: #198754;
             font-weight: 400;
             font-size: 12px;
             padding: 4px 8px;
             border-radius: 4px;
         }
         .badge-role-admin {
-            background-color: #dc3545;
             font-weight: 400;
             font-size: 12px;
             padding: 4px 8px;
@@ -147,16 +145,13 @@
         <!-- Левая боковая панель -->
         <div class="col-md-3">
             <div class="sidebar">
-                <div class="sidebar-header">Users</div>
                 <div class="list-group list-group-flush">
                     <a th:each="user : ${users}"
                        th:href="@{/admin/users/{id}(id=${user.id})}"
                        class="list-group-item list-group-item-action"
                        th:classappend="${user.id == viewedUser.id} ? 'active'">
-                        <div class="user-avatar" th:text="${user.firstName.substring(0,1).toUpperCase()}">A</div>
                         <div>
-                            <div th:text="${user.firstName} + ' ' + ${user.lastName}">Admin Admin</div>
-                            <small class="text-muted" th:text="${user.email}">admin@mail.ru</small>
+                            <div th:text="${user.firstName}">Admin Admin</div>
                         </div>
                     </a>
                 </div>

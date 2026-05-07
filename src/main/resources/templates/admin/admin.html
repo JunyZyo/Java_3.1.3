@@ -26,14 +26,12 @@
             color: #ffffff;
         }
         .badge-role {
-            background-color: #198754;
             font-weight: 400;
             font-size: 12px;
             padding: 4px 8px;
             border-radius: 4px;
         }
         .badge-role-admin {
-            background-color: #dc3545;
             font-weight: 400;
             font-size: 12px;
             padding: 4px 8px;
@@ -168,9 +166,8 @@
 
         .btn-edit {
             font-size: 13px;
-            color: #0d6efd;
-            border: 1px solid #0d6efd;
-            background: transparent;
+            background-color: #0073c3;
+            color: #ffffff;
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
@@ -181,15 +178,14 @@
         }
         .btn-delete {
             font-size: 13px;
-            color: #dc3545;
-            border: 1px solid #dc3545;
-            background: transparent;
+            color: #ffffff;
+            background-color: #dc3545;
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
         }
         .btn-delete:hover {
-            background-color: #dc3545;
+            background-color: #ff5162;
             color: #fff;
         }
 
@@ -244,7 +240,7 @@
                        class="list-group-item list-group-item-action"
                        th:classappend="${iterStat.first} ? 'active'">
                         <div>
-                            <div th:text="${user.firstName} + ' ' + ${user.lastName}">Admin Admin</div>
+                            <div th:text="${user.firstName}">Admin Admin</div>
                         </div>
                     </a>
                 </div>
@@ -426,7 +422,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete <strong th:text="${user.firstName} + ' ' + ${user.lastName}"></strong>?</p>
+                    <p>Are you sure you want to delete <strong th:text="${user.firstName}"></strong>?</p>
                     <div class="d-flex gap-2 justify-content-end">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display: inline;">
