@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
+        existingUser.setAge(user.getAge());
         existingUser.setEmail(user.getEmail());
         existingUser.setUsername(user.getUsername());
 
@@ -97,8 +98,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
+//        user.getRoles().size();
+//        return user;
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + email));
         user.getRoles().size();
         return user;
     }
@@ -107,26 +112,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void init() {
         if (roleRepository.count() == 0) {
-            roleRepository.save(new Role("ROLE_USER"));
-            roleRepository.save(new Role("ROLE_ADMIN"));
+            roleRepository.save(new Role("USER"));
+            roleRepository.save(new Role("ADMIN"));
         }
 
         if (userRepository.count() == 0) {
-            Role userRole = roleRepository.findByName("ROLE_USER").get();
-            Role adminRole = roleRepository.findByName("ROLE_ADMIN").get();
+            Role userRole = roleRepository.findByName("USER").get();
+            Role adminRole = roleRepository.findByName("ADMIN").get();
 
             Set<Role> adminRoles = new HashSet<>();
             adminRoles.add(adminRole);
             adminRoles.add(userRole);
 
-            User admin = new User("Admin", "Adminov", "admin@mail.ru", "admin", "admin", adminRoles);
+            User admin = new User("Admin", "Adminov", 35, "admin@mail.ru", "admin", "admin", adminRoles);
 
             save(admin);
 
             Set<Role> userRoles = new HashSet<>();
             userRoles.add(userRole);
 
-            User user = new User("User", "Userov", "user@mail.ru", "user", "user", userRoles);
+            User user = new User("User", "Userov", 30, "user@mail.ru", "user", "user", userRoles);
 
             save(user);
         }

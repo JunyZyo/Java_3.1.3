@@ -31,7 +31,7 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("newuser") User user, @RequestParam(required = false) Long[] roleIds) {
+    public String createUser(@ModelAttribute("newUser") User user, @RequestParam(required = false) Long[] roleIds) {
         if (roleIds != null && roleIds.length > 0) {
             user.setRoles(roleService.findByIds(roleIds));
         }
@@ -39,11 +39,24 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("/users/{id}")
+    public String viewUser(@PathVariable Long id, Model model, Principal principal) {
+        User user = userService.getById(id);
+        if (user == null) {
+            return "redirect:/admin/users";
+        }
+        model.addAttribute("viewedUser", user);
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("currentUser", userService.findByUsername(principal.getName()));
+        model.addAttribute("allRoles", roleService.findAll());
+        return "admin/userinfo";
+    }
+
     @GetMapping("/users/{id}/edit")
     public String editUserForm(@PathVariable Long id, Model model, Principal principal) {
         User user = userService.getById(id);
         if (user == null) {
-            return "redirect:/admin";
+            return "redirect:/admin/users";
         }
         model.addAttribute("user", user);
         model.addAttribute("allRoles", roleService.findAll());
@@ -56,8 +69,6 @@ public class AdminController {
         user.setId(id);
         if (roleIds != null && roleIds.length > 0) {
             user.setRoles(roleService.findByIds(roleIds));
-        } else {
-            user.setRoles(null);
         }
         userService.update(user);
         return "redirect:/admin/users";
