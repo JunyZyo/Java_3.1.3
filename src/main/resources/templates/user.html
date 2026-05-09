@@ -30,9 +30,19 @@
         }
         .navbar {
             background-color: #171921;
-            color: white;
+            border-bottom: 1px solid #dee2e6;
+            padding: 8px 0;
+        }
+        .navbar-brand {
+            font-size: 16px;
+            color: #ffffff;
+            font-weight: 400;
+        }
+        .navbar-brand:hover {
+            color: #ffffff;
         }
         .navbar-text {
+            font-size: 14px;
             color: #ffffff;
         }
         .btn {
@@ -60,6 +70,37 @@
         .btn-logout:hover {
             color: #ffffff;
         }
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            padding: 0;
+        }
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .sidebar .list-group-item {
+            border: none;
+            border-radius: 0;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+        .sidebar .list-group-item.active {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+            border-left: 3px solid #0d6efd;
+        }
     </style>
 </head>
 <body>
@@ -80,25 +121,24 @@
 
 <div class="container mt-4">
 
-    <h1>User information-page</h1>
 
     <div class="row">
         <!-- Левая боковая панель -->
         <div class="col-md-3 mb-4">
             <div class="sidebar">
                 <div class="list-group list-group-flush">
-                    <a th:each="user, iterStat : ${user}"
-                       class="list-group-item list-group-item-action"
-                       th:classappend="${iterStat.first} ? 'active'">
-                        <div>
-                            <div th:text="${user.firstName}"></div>
-                        </div>
+                    <a href="/admin/users" class="list-group-item list-group-item-action">
+                        Admin
+                    </a>
+                    <a href="/user" class="list-group-item list-group-item-action" th:classappend="'active'">
+                        User
                     </a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-9">
+            <h1>User information-page</h1>
     <div class="card">
         <div class="card-header">
             About user

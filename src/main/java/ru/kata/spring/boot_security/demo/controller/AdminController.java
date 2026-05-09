@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -14,24 +15,34 @@ import java.security.Principal;
 public class AdminController {
 
     private final UserService userService;
-    private final RoleServiceImpl roleService;
+    private final RoleService roleService;
 
-    public AdminController(UserService userService, RoleServiceImpl roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
+    }
+
+    private User getCurrentUser(Principal principal) {
+        String name = principal.getName();
+        User user = userService.findByEmail(name);
+        if (user == null) {
+            user = userService.findByUsername(name);
+        }
+        return user;
     }
 
     @GetMapping("/users")
     public String showAllUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.findAll());
-        model.addAttribute("currentUser", userService.findByUsername(principal.getName()));
+        model.addAttribute("currentUser", getCurrentUser(principal));
         model.addAttribute("allRoles", roleService.findAll());
         model.addAttribute("newUser", new User());
         return "admin/admin";
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("newUser") User user, @RequestParam(required = false) Long[] roleIds) {
+    public String createUser(@ModelAttribute("newUser") User user,
+                             @RequestParam(required = false) Long[] roleIds) {
         if (roleIds != null && roleIds.length > 0) {
             user.setRoles(roleService.findByIds(roleIds));
         }
@@ -47,7 +58,7 @@ public class AdminController {
         }
         model.addAttribute("viewedUser", user);
         model.addAttribute("users", userService.findAll());
-        model.addAttribute("currentUser", userService.findByUsername(principal.getName()));
+        model.addAttribute("currentUser", getCurrentUser(principal));
         model.addAttribute("allRoles", roleService.findAll());
         return "admin/userinfo";
     }
@@ -60,12 +71,14 @@ public class AdminController {
         }
         model.addAttribute("user", user);
         model.addAttribute("allRoles", roleService.findAll());
-        model.addAttribute("currentUser", userService.findByUsername(principal.getName()));
+        model.addAttribute("currentUser", getCurrentUser(principal));
         return "admin/edituser";
     }
 
     @PostMapping("/users/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute User user, @RequestParam(required = false) Long[] roleIds) {
+    public String updateUser(@PathVariable Long id,
+                             @ModelAttribute User user,
+                             @RequestParam(required = false) Long[] roleIds) {
         user.setId(id);
         if (roleIds != null && roleIds.length > 0) {
             user.setRoles(roleService.findByIds(roleIds));

@@ -224,13 +224,11 @@
         <div class="col-md-3 mb-4">
             <div class="sidebar">
                 <div class="list-group list-group-flush">
-                    <a th:each="user, iterStat : ${users}"
-                       th:href="@{/admin/users/{id}(id=${user.id})}"
-                       class="list-group-item list-group-item-action"
-                       th:classappend="${iterStat.first} ? 'active'">
-                        <div>
-                            <div th:text="${user.firstName}">Admin Admin</div>
-                        </div>
+                    <a href="/admin/users" class="list-group-item list-group-item-action" th:classappend="'active'">
+                        Admin
+                    </a>
+                    <a href="/user" class="list-group-item list-group-item-action">
+                        User
                     </a>
                 </div>
             </div>
@@ -343,7 +341,7 @@
     </div>
 </div>
 
-<!-- Модальные окна Edit и Delete (оставьте как есть) -->
+<!-- Модальные окна Edit и Delete -->
 <div th:each="user : ${users}">
     <div class="modal fade" th:id="'editModal' + ${user.id}" tabindex="-1">
         <div class="modal-dialog">

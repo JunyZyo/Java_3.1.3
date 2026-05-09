@@ -42,6 +42,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null) {
+            user.getRoles().size();
+        }
+        return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
         if (user != null) {
